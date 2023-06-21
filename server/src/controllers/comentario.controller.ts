@@ -42,11 +42,30 @@ class ComentarioController {
               lastname: true,
             },
           },
-          crateAt: true,
+          cratedAt: true,
         },
       });
 
       return res.status(200).json(coments);
+    } catch (error: any) {
+      console.log(error);
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  async update(req: Request, res: Response) {
+    try {
+      const { comentarioId, texto } = req.body;
+      const updated = await prisma.comentario.update({
+        where: {
+          id: Number(comentarioId),
+        },
+        data: {
+          texto,
+        },
+      });
+
+      return res.status(200).json(updated);
     } catch (error: any) {
       console.log(error);
       return res.status(500).json({ message: error.message });
@@ -98,7 +117,7 @@ class ComentarioController {
               name: true,
             },
           },
-          crateAt: true,
+          cratedAt: true,
         },
       });
     } catch (error: any) {

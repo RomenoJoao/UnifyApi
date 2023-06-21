@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { UserSchema } from "../validators/user";
+import { UserSchema, updateSchema } from "../validators/user";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -108,6 +108,65 @@ class UserController {
       });
 
       return res.status(201).json(newUser);
+    } catch (error: any) {
+      console.log(error);
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  async update(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const request = updateSchema.parse(req.body);
+
+      const data = {
+        name: request.name,
+        lastname: request.lastname,
+        date: request.date,
+        login: {
+          update: {
+            username: request.login.username || "",
+            email: request.login.email,
+            role: request.login.role || "USER",
+          },
+        },
+      };
+
+      const updatedUser = await prisma.user.update({
+        where: {
+          id: Number(id),
+        },
+        data,
+      });
+
+      return res.status(200).json(updatedUser);
+    } catch (error: any) {
+      console.log(error);
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  async updatePassword(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { password } = req.body;
+
+      const data = {
+        login: {
+          update: {
+            password: await bcrypt.hash(password, 10),
+          },
+        },
+      };
+
+      const updatedUser = await prisma.user.update({
+        where: {
+          id: Number(id),
+        },
+        data,
+      });
+
+      return res.status(200).json(updatedUser);
     } catch (error: any) {
       console.log(error);
       return res.status(500).json({ message: error.message });

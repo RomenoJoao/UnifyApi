@@ -21,8 +21,8 @@ model User {
 
   login Login?
 
-  crateAt  DateTime @default(now())
-  updateAt DateTime @updatedAt
+  cratedAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Login {
@@ -35,8 +35,8 @@ model Login {
   user   User @relation(fields: [userId], references: [id])
   userId Int  @unique
 
-  crateAt  DateTime @default(now())
-  updateAt DateTime @updatedAt
+  cratedAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Comentario {
@@ -47,8 +47,8 @@ model Comentario {
   content   Conteudo @relation(fields: [contentId], references: [id])
   contentId Int
 
-  crateAt  DateTime @default(now())
-  updateAt DateTime @updatedAt
+  cratedAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Like {
@@ -58,8 +58,8 @@ model Like {
   content   Conteudo @relation(fields: [contentId], references: [id])
   contentId Int
 
-  crateAt  DateTime @default(now())
-  updateAt DateTime @updatedAt
+  cratedAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Conteudo {
@@ -73,8 +73,8 @@ model Conteudo {
   author      User         @relation(fields: [authorId], references: [id])
   authorId    Int
 
-  crateAt  DateTime @default(now())
-  updateAt DateTime @updatedAt
+  cratedAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Colecao {
@@ -83,6 +83,6 @@ model Colecao {
   conts     Conteudo @relation(fields: [conteudos], references: [id])
   conteudos Int
 
-  crateAt  DateTime @default(now())
-  updateAt DateTime @updatedAt
+  cratedAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
