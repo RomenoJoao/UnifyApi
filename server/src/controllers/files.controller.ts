@@ -2,6 +2,9 @@ import { Response, Request } from "express";
 import fs from "fs";
 import { resolve } from "path";
 import mime from "mime-types";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 interface IFile {
   originalName: string;

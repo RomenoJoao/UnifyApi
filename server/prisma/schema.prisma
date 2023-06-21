@@ -20,6 +20,9 @@ model User {
   contsAdd     Conteudo[]
 
   login Login?
+
+  crateAt  DateTime @default(now())
+  updateAt DateTime @updatedAt
 }
 
 model Login {
@@ -31,6 +34,9 @@ model Login {
 
   user   User @relation(fields: [userId], references: [id])
   userId Int  @unique
+
+  crateAt  DateTime @default(now())
+  updateAt DateTime @updatedAt
 }
 
 model Comentario {
@@ -40,6 +46,9 @@ model Comentario {
   authorID  Int
   content   Conteudo @relation(fields: [contentId], references: [id])
   contentId Int
+
+  crateAt  DateTime @default(now())
+  updateAt DateTime @updatedAt
 }
 
 model Like {
@@ -48,6 +57,9 @@ model Like {
   authorId  Int
   content   Conteudo @relation(fields: [contentId], references: [id])
   contentId Int
+
+  crateAt  DateTime @default(now())
+  updateAt DateTime @updatedAt
 }
 
 model Conteudo {
@@ -60,13 +72,17 @@ model Conteudo {
   likeds      Like[]
   author      User         @relation(fields: [authorId], references: [id])
   authorId    Int
-  createdAt   DateTime     @default(now())
-}
 
+  crateAt  DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
 
 model Colecao {
   id        Int      @id @default(autoincrement())
   titulo    String
   conts     Conteudo @relation(fields: [conteudos], references: [id])
   conteudos Int
+
+  crateAt  DateTime @default(now())
+  updateAt DateTime @updatedAt
 }

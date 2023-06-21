@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { ParserService } from "../utils/ParserService";
 
 const prisma = new PrismaClient();
@@ -46,7 +46,23 @@ class LikeController {
         },
       });
       return res.status(200).json(liked);
+    } catch (error: any) {
+      console.log(error);
+      return res.status(500).json({ message: error.message });
+    }
+  }
 
+  async delete(req: Request, res: Response) {
+    try {
+      const { likeid } = req.body;
+
+      const dislike = await prisma.like.delete({
+        where: {
+          id: Number(likeid),
+        },
+      });
+
+      return res.status(200).json(dislike);
     } catch (error: any) {
       console.log(error);
       return res.status(500).json({ message: error.message });

@@ -29,6 +29,62 @@ class UserController {
     }
   }
 
+  async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: Number(id),
+        },
+      });
+
+      if (user) {
+        await prisma.user.delete({
+          where: {
+            id: Number(id),
+          },
+        });
+        return res.status(200).json({ message: "User deleted" });
+      }
+
+      return res.status(404).json({ message: "User not found" });
+    } catch (error: any) {
+      console.log(error);
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  async getOne(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: Number(id),
+        },
+        include: {
+          login: {
+            select: {
+              email: true,
+              role: true,
+              username: true,
+            },
+          },
+        },
+      });
+
+      if (user) {
+        return res.status(200).json(user);
+      }
+
+      return res.status(404).json({ message: "User not found" });
+    } catch (error: any) {
+      console.log(error);
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
   async create(req: Request, res: Response) {
     try {
       const request = UserSchema.parse(req.body);
