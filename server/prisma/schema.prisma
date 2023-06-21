@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int          @id @default(autoincrement())
+  name         String
+  lastname     String
+  date         String?
+  comentariosU Comentario[]
+  likesU       Like[]
+  contsAdd     Conteudo[]
+
+  login Login?
+}
+
+model Login {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  username String @unique
+  password String
+  role     String
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+}
+
+model Comentario {
+  id        Int      @id @default(autoincrement())
+  texto     String
+  authorC   User     @relation(fields: [authorID], references: [id])
+  authorID  Int
+  content   Conteudo @relation(fields: [contentId], references: [id])
+  contentId Int
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  content   Conteudo @relation(fields: [contentId], references: [id])
+  contentId Int
+}
+
+model Conteudo {
+  id          Int          @id @default(autoincrement())
+  titulo      String
+  path        String
+  coverpath   String?
+  comentarios Comentario[]
+  colecao     Colecao[]
+  likeds      Like[]
+  author      User         @relation(fields: [authorId], references: [id])
+  authorId    Int
+  createdAt   DateTime     @default(now())
+}
+
+
+model Colecao {
+  id        Int      @id @default(autoincrement())
+  titulo    String
+  conts     Conteudo @relation(fields: [conteudos], references: [id])
+  conteudos Int
+}
